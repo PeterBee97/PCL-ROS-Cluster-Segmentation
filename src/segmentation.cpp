@@ -26,7 +26,7 @@ Author: Sean Cassero
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/segmentation/extract_clusters.h>
 #include <obj_recognition/SegmentedClustersArray.h>
-#include <obj_recognition/ClusterData.h>
+//#include <obj_recognition/ClusterData.h>
 
 
 class segmentation {
@@ -36,9 +36,11 @@ public:
   explicit segmentation(ros::NodeHandle nh) : m_nh(nh)  {
 
     // define the subscriber and publisher
-    m_sub = m_nh.subscribe ("/obj_recognition/point_cloud", 1, &segmentation::cloud_cb, this);
+    // m_sub = m_nh.subscribe ("/obj_recognition/point_cloud", 1, &segmentation::cloud_cb, this);
+    m_sub = m_nh.subscribe ("/kinect2/hd/points", 1, &segmentation::cloud_cb, this);
+    // m_sub = m_nh.subscribe ("/camera/depth_registered/points", 1, &segmentation::cloud_cb, this);
     m_clusterPub = m_nh.advertise<obj_recognition::SegmentedClustersArray> ("obj_recognition/pcl_clusters",1);
-
+    m_pub = m_nh.advertise<sensor_msgs::PointCloud2> ("obj_recognition/cluster_cloud",1);
   }
 
 private:
@@ -143,7 +145,7 @@ void segmentation::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
   // specify euclidean cluster parameters
   ec.setClusterTolerance (0.02); // 2cm
-  ec.setMinClusterSize (100);
+  ec.setMinClusterSize (50);
   ec.setMaxClusterSize (25000);
   ec.setSearchMethod (tree);
   ec.setInputCloud (xyzCloudPtrRansacFiltered);
@@ -194,6 +196,8 @@ void segmentation::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     // add the cluster to the array message
     //clusterData.cluster = output;
     CloudClusters.clusters.push_back(output);
+    output.header.frame_id = cloud_msg->header.frame_id;
+    m_pub.publish(output);
 
   }
 

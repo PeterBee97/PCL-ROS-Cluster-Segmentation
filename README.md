@@ -6,6 +6,9 @@
 [image6]: ./photos/finalSegmentation.png
 [image7]: ./photos/nodeDuration.png
 
+This is a fork of the [PCL-ROS-cluster-Segmentation](https://github.com/jupidity/PCL-ROS-cluster-Segmentation) repo. Choose the input point cloud source in `segmentation.cpp` by commenting the other subscribes. Tested with Kinect v2 and Realsense D435 (both require ROS wrapper).  
+---
+
 ### ROS Node for Cluster Based Segmentation with PCL
 ---
 
@@ -16,22 +19,23 @@
 
 clone the repo:
 
-    git clone https://github.com/jupidity/PCL-ROS-cluster-Segmentation.git
+    $ cd <your workspace>/src
+    $ git clone https://github.com/tinkerfuroc/PCL-ROS-Cluster-Segmentation.git
 
 run catkin_make in your ROS source directory
 
-    $ cd ~/catkin_ws
+    $ cd <your workspace>
     $ catkin_make
 
-start the simulation with roslaunch
+(if using simulated pointcloud as input) start the simulation with roslaunch
 
-    $ roslaunch roslaunch sensor_stick robot_spawn.launch
+    $ roslaunch obj_recognition robot_spawn.launch
 
 start the segmentation node
 
-    $ rosrun sensor_stick segmentation
+    $ rosrun obj_recognition segmentation
 
-the segmentation node publishes `sensor_msgs::PCLPointCloud2` messages to the `/pcl_objects` topic. You can visualize the segmentation in `RViz` by selecting that topic to view.
+The segmentation node publishes `sensor_msgs::PCLPointCloud2` messages to the `/obj_recognition/cluster_cloud` topic. You can visualize the segmentation in `RViz` by selecting that topic to view. This topic will receive discrete messages of every single object. You may set `decay_time` to `1` to view all objects. The set of point clouds of all objects is published under `/obj_recognition/pcl_clusters` as custom message type `SegmentedClusterArray`.
 
 
 ### Dependencies
@@ -41,7 +45,7 @@ pcl 1.7
 
 ROS Kinetic
 
-Gazebo 7
+Gazebo 7 (only needed for simulation)
 
 ### Overview
 ---
