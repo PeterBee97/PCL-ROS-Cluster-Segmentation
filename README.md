@@ -6,10 +6,10 @@
 [image6]: ./photos/finalSegmentation.png
 [image7]: ./photos/nodeDuration.png
 
-This is a fork of the [PCL-ROS-cluster-Segmentation](https://github.com/jupidity/PCL-ROS-cluster-Segmentation) repo. Choose the input point cloud source in `segmentation.cpp` by commenting the other subscribes. Tested with Kinect v2 and Realsense D435 (both require ROS wrapper).  
----
 
 ### ROS Node for Cluster Based Segmentation with PCL
+---
+This is a fork of the [PCL-ROS-cluster-Segmentation](https://github.com/jupidity/PCL-ROS-cluster-Segmentation) repo. Choose the input point cloud source in `segmentation.cpp` by commenting the other subscribes. Tested with Kinect v2 and Realsense D435 (both require ROS wrapper).  
 ---
 
 `C++` `ROS` node for image segmentation on a cluttered table with cluster based methods. Tested in simulation environment provided at https://github.com/udacity/RoboND-Perception-Exercises.git. Node sensor input is `ROS` msg `PointCloud2` generated in `Gazebo` simulation environment from RGBD camera.`ROS` node `segmentation.cpp` in ``/scripts`` directory.   
